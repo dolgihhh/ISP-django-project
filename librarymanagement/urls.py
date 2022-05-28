@@ -16,8 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from library import views
+from django.conf.urls import include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home_view),
+    path('accounts/',include('django.contrib.auth.urls')),
+    path('adminclick', views.adminclick_view),
+    path('studentclick', views.studentclick_view),
 ]
