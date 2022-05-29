@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from library import views
 from django.conf.urls import include
+from django.contrib.auth.views import LoginView,LogoutView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,4 +25,8 @@ urlpatterns = [
     path('accounts/',include('django.contrib.auth.urls')),
     path('adminclick', views.adminclick_view),
     path('studentclick', views.studentclick_view),
+    path('studentsignup', views.studentsignup_view),
+    path('studentlogin', LoginView.as_view(template_name='studentlogin.html')),
+    path('logout', LogoutView.as_view(template_name='index.html')),
+    path('afterlogin', views.afterlogin_view)
 ]

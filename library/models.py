@@ -52,7 +52,7 @@ class Book(models.Model):
     name = models.CharField(max_length=30)
     unique_id = models.PositiveIntegerField(default=randomizer)
     author = models.CharField(max_length=40)
-    category = models.CharField(max_length=30,choices=catchoice,default='education')
+    category = models.CharField(max_length=30,choices=catchoice,default='учебная')
     is_issued = models.BooleanField(default=False)
 
     def __str__(self):
