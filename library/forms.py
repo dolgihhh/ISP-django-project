@@ -14,3 +14,8 @@ class StudentExtraForm(forms.ModelForm):
         model=models.StudentExtra
         fields=['course','faculty']
 
+
+class BookForm(forms.ModelForm):
+    class Meta:
+        model=models.Book
+        fields=['name','author','category']

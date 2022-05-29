@@ -30,4 +30,7 @@ urlpatterns = [
     path('logout', LogoutView.as_view(template_name='index.html')),
     path('afterlogin', views.afterlogin_view),
     path('adminlogin', LoginView.as_view(template_name='adminlogin.html')),
+    path('addbook', views.addbook_view),
+    path('viewbook', views.viewbook_view),
+    path('viewstudent', views.viewstudent_view),
 ]

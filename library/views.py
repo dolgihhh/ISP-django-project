@@ -56,3 +56,29 @@ def afterlogin_view(request):
         return render(request, 'adminafterlogin.html')
     else:
         return render(request, 'studentafterlogin.html')
+
+
+@login_required(login_url='adminlogin')
+@user_passes_test(is_admin)
+def addbook_view(request):
+    form = forms.BookForm()
+    if request.method == 'POST':
+        form = forms.BookForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            return render(request,'bookadded.html')
+    return render(request,'addbook.html', {'form': form})
+    
+
+@login_required(login_url='adminlogin')
+@user_passes_test(is_admin)
+def viewbook_view(request):
+    books=models.Book.objects.filter(is_issued=False)
+    return render(request, 'viewbook.html', {'books': books})
+
+
+@login_required(login_url='adminlogin')
+@user_passes_test(is_admin)
+def viewstudent_view(request):
+    students=models.StudentExtra.objects.all()
+    return render(request,'viewstudent.html',{'students':students})

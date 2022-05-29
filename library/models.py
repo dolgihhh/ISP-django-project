@@ -4,9 +4,22 @@ from datetime import datetime,timedelta
 import random
 
 class StudentExtra(models.Model):
+    coursechoice = [
+        ('1','1'),
+        ('2','2'),
+        ('3','3'),
+        ('4','4')
+    ]
+    facultychoice = [
+        ('ФКсис','ФКсис'),
+        ('ФКП','ФКП'),
+        ('ФРЭ','ФРЭ'),
+        ('ФиТу','ФиТу'),
+        ('ИЭФ','ИЭФ')
+    ]
     user = models.OneToOneField(User,on_delete=models.CASCADE)
-    course = models.CharField(max_length=40)
-    faculty = models.CharField(max_length=40)
+    course = models.CharField(max_length=40,choices=coursechoice,default='1',verbose_name="Курс")
+    faculty = models.CharField(max_length=40,choices=facultychoice,default='ФКсис',verbose_name="Факультет")
 
     def __str__(self):
         return self.user.first_name+' '+self.user.last_name+'['+str(self.course)+']'
