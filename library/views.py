@@ -5,6 +5,7 @@ from django.contrib.auth.models import Group
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required,user_passes_test
 from datetime import datetime,timedelta,date
+from .models import Book
 
 
 def home_view(request):
@@ -82,3 +83,51 @@ def viewbook_view(request):
 def viewstudent_view(request):
     students=models.StudentExtra.objects.all()
     return render(request,'viewstudent.html',{'students':students})
+
+
+@login_required(login_url='adminlogin')
+@user_passes_test(is_admin)
+def issuebook_view(request):
+    form=forms.IssuedBookForm()
+    if request.method == 'POST':
+        form = forms.IssuedBookForm(request.POST)
+        if form.is_valid():
+            obj = models.IssuedBook()
+            obj.unique_id = request.POST.get('book2')
+            obj.enrollment = request.POST.get('enrollment2')
+            book = Book.objects.get(unique_id=obj.unique_id)
+            obj.name = book.name
+            book.is_issued=True
+            book.save()
+            obj.save()
+            return render(request,'bookissued.html')
+    return render(request, 'issuebook.html',{'form': form})
+
+
+@login_required(login_url='adminlogin')
+@user_passes_test(is_admin)
+def viewissuedbook_view(request):
+    issuedbooks=models.IssuedBook.objects.all()
+    li = []
+    for ib in issuedbooks:
+        issdate=str(ib.issuedate.day)+'.'+str(ib.issuedate.month)+'.'+str(ib.issuedate.year)
+        expdate=str(ib.expirydate.day)+'.'+str(ib.expirydate.month)+'.'+str(ib.expirydate.year)
+        #fine calculation
+        days = (date.today()-ib.issuedate)
+        print(date.today())
+        d = days.days
+        fine = 0
+        if d > 15:
+            day = d-15
+            fine = day*10
+
+        books = list(models.Book.objects.filter(unique_id=ib.unique_id))
+        students = list(models.StudentExtra.objects.filter(user_id=ib.enrollment))
+        i = 0
+        for l in books:
+            t = (students[i].get_name,students[i].course,students[i].faculty,books[i].name,
+               books[i].author,books[i].unique_id,issdate,expdate,fine)
+            i = i + 1
+            li.append(t)
+
+    return render(request,'viewissuedbook.html',{'li':li})

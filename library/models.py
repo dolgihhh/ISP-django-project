@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from datetime import datetime,timedelta
 import random
 
+
 class StudentExtra(models.Model):
     coursechoice = [
         ('1','1'),
@@ -81,6 +82,7 @@ class IssuedBook(models.Model):
     unique_id = models.CharField(max_length=30)
     issuedate = models.DateField(auto_now=True)
     expirydate = models.DateField(default=get_expiry)
+    enrollment = models.CharField(max_length=30)
 
     def __str__(self):
         return self.name

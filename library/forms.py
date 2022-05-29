@@ -19,3 +19,9 @@ class BookForm(forms.ModelForm):
     class Meta:
         model=models.Book
         fields=['name','author','category']
+
+
+class IssuedBookForm(forms.Form):
+
+    book2=forms.ModelChoiceField(queryset=models.Book.objects.filter(is_issued=False),empty_label="Название и уникальный номер", to_field_name="unique_id",label='Название и уникальный номер')
+    enrollment2=forms.ModelChoiceField(queryset=models.StudentExtra.objects.all(),empty_label="Имя и курс", to_field_name="user_id",label='Имя и курс')
