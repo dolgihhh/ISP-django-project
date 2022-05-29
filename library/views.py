@@ -52,7 +52,7 @@ def is_admin(user):
 
 
 def afterlogin_view(request):
-    if is_admin(request.user):
+    if is_admin(request.user) or request.user.username=="admin":
         return render(request, 'adminafterlogin.html')
     else:
         return render(request, 'studentafterlogin.html')

@@ -28,5 +28,6 @@ urlpatterns = [
     path('studentsignup', views.studentsignup_view),
     path('studentlogin', LoginView.as_view(template_name='studentlogin.html')),
     path('logout', LogoutView.as_view(template_name='index.html')),
-    path('afterlogin', views.afterlogin_view)
+    path('afterlogin', views.afterlogin_view),
+    path('adminlogin', LoginView.as_view(template_name='adminlogin.html')),
 ]
