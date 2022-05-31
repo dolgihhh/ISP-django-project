@@ -131,3 +131,32 @@ def viewissuedbook_view(request):
             li.append(t)
 
     return render(request,'viewissuedbook.html',{'li':li})
+
+
+@login_required(login_url='studentlogin')
+def viewissuedbookbystudent(request):
+    student=models.StudentExtra.objects.filter(user_id=request.user.id)
+    issuedbook=models.IssuedBook.objects.filter(enrollment=student[0].user_id)
+
+    li1=[]
+
+    li2=[]
+    for ib in issuedbook:
+        books=models.Book.objects.filter(unique_id=ib.unique_id)
+        for book in books:
+            t=(book.name,book.author)
+            li1.append(t)
+        issdate=str(ib.issuedate.day)+'.'+str(ib.issuedate.month)+'.'+str(ib.issuedate.year)
+        expdate=str(ib.expirydate.day)+'.'+str(ib.expirydate.month)+'.'+str(ib.expirydate.year)
+        #fine calculation
+        days=(date.today()-ib.issuedate)
+        print(date.today())
+        d=days.days
+        fine=0
+        if d>15:
+            day=d-15
+            fine=day*10
+        t=(issdate,expdate,fine)
+        li2.append(t)
+
+    return render(request,'viewissuedbookbystudent.html',{'li1':li1,'li2':li2})
