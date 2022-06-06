@@ -148,7 +148,7 @@ LOGGING = {
         },
     },
     'loggers': {
-        'main': {
+        'library': {
             'level': 'INFO',
             'handlers': ['file', 'console'],
         },
@@ -164,3 +164,4 @@ LOGGING = {
         },
     },
 }
+

@@ -6,7 +6,9 @@ from django.contrib import auth
 from django.contrib.auth.decorators import login_required,user_passes_test
 from datetime import datetime,timedelta,date
 from .models import Book
+import logging
 
+logger = logging.getLogger(__name__)
 
 def home_view(request):
     if request.user.is_authenticated:
@@ -40,7 +42,7 @@ def studentsignup_view(request):
             f2 = form2.save(commit=False)
             f2.user = user
             user2 = f2.save()
-
+            logger.info(f'{user} registred')
             my_student_group = Group.objects.get_or_create(name='STUDENT')
             my_student_group[0].user_set.add(user)
 
@@ -54,8 +56,10 @@ def is_admin(user):
 
 def afterlogin_view(request):
     if is_admin(request.user) or request.user.username=="admin":
+        logger.info(f'{request.user.username} logged in')
         return render(request, 'adminafterlogin.html')
     else:
+        logger.info(f'{request.user.username} logged in')
         return render(request, 'studentafterlogin.html')
 
 
@@ -67,6 +71,7 @@ def addbook_view(request):
         form = forms.BookForm(request.POST)
         if form.is_valid():
             user = form.save()
+            logger.info(f'{user} book added')
             return render(request,'bookadded.html')
     return render(request,'addbook.html', {'form': form})
     
@@ -99,6 +104,7 @@ def issuebook_view(request):
             obj.name = book.name
             book.is_issued=True
             book.save()
+            logger.info(f'{book} issued')
             obj.save()
             return render(request,'bookissued.html')
     return render(request, 'issuebook.html',{'form': form})
